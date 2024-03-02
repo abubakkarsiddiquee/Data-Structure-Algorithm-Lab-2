@@ -1,2 +1,2 @@
 # Data-Structure-Algorithm-Lab-2
-GitHub repo featuring concise implementations covering Divide &amp; Conquer, Greedy Algorithms, Dynamic Programming, Disjoint Set Union, Minimum Spanning Tree, Shortest Path, and String Matching. Ideal for educational use. Contributions welcome.
+In this GitHub repository, I will provide concise implementations for various algorithms including Divide & Conquer, Greedy Algorithms, Dynamic Programming, Disjoint Set Union, Minimum Spanning Tree, Shortest Path, and String Matching. Aimed at educational purposes, contributions are encouraged.
