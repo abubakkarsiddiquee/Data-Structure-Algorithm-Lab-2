@@ -28,7 +28,6 @@ int quickselect(vector<int>& nums, int k, int left, int right) {
         return quickselect(nums, k - countRight, left, pivotIndex - 1);
     }
 }
-
 int findKthLargest(vector<int>& nums, int k) {
     return quickselect(nums, k, 0, nums.size() - 1);
 }
