@@ -2,9 +2,7 @@
 using namespace std;
 
 const int N=1e5+10;
-
 int a[N];
-
 
 long long merge(int l, int r, int mid){
     int l_s = mid - l + 1;
