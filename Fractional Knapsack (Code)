@@ -1,0 +1,54 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+struct Product{
+    int id;
+    float profit,weight,profit_per_weight;
+};
+
+bool comparator(Product p1,Product p2){
+    return p1.profit_per_weight>p2.profit_per_weight;
+}
+
+float FractioanlKnapsack(vector<Product> &p,float maxCapacity){
+    sort(p.begin(),p.end(),comparator);
+
+    float remaining_Weight=maxCapacity;
+    float totalProfit=0.0;
+
+    for(int i=0;i<p.size();i++){
+        if(remaining_Weight>=p[i].weight){
+            totalProfit+=p[i].profit;
+            remaining_Weight-=p[i].weight;
+        }
+        else{
+            totalProfit+=(remaining_Weight*p[i].profit_per_weight);
+        }
+    }
+    return totalProfit;
+}
+
+int main()
+{
+    int n;
+    cout<<"Enter the number of Products: ";
+    cin>>n;
+
+    vector<Product> p(n);
+
+    for(int i=0;i<n;i++){
+        cout<<"Product "<<i+1<<": ";
+        p[i].id=i+1;
+        cin>>p[i].profit>>p[i].weight;
+        p[i].profit_per_weight=p[i].profit/p[i].weight;
+    }
+
+    float maxCapacity;
+    cout<<"Enter the maximum capacity of the knapsack: ";
+    cin>>maxCapacity;
+
+    float ans=FractioanlKnapsack(p,maxCapacity);
+    cout<<"Total profit is: "<<ans<<endl;
+
+    return 0;
+}
