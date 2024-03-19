@@ -1,0 +1,46 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+struct Activity{
+    int activity_id,start,end,duration;
+};
+
+bool comparator(Activity a1,Activity a2){
+    return a1.end<a2.end;
+}
+
+void ActivitySelection2(Activity a[],int n){
+    sort(a,a+n,comparator);
+
+    cout<<"Selected Activities are: "<<a[0].activity_id<<"    ";
+
+    Activity current_act=a[0];
+    for(int i=1;i<n;i++){
+        if(current_act.end<a[i].start){
+            cout<<a[i].activity_id<<"   ";
+            current_act=a[i];
+        }
+    }
+
+}
+
+int main()
+{
+    int n;
+    cout<<"Enter the number of activities: ";
+    cin>>n;
+
+    Activity a[n];
+    // vector<Activity> a(n);
+
+    for(int i=0;i<n;i++){
+        cout<<"Activity "<<i+1<<": ";
+        a[i].activity_id=i+1;
+        cin>>a[i].start>>a[i].end;
+        a[i].duration=a[i].end-a[i].start;
+    }
+    
+    ActivitySelection2(a,n);
+
+    return 0;
+}
