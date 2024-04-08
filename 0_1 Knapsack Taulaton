@@ -1,0 +1,55 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int Knapsack0_1_Tabultion(vector<int> &price,vector<int> &weight,int maxWeight,int no_of_product){
+    // Step 1: Create 2D-DP vector an d initialize it with 0
+    vector<vector<int>> dp(no_of_product,vector<int>(maxWeight+1,0));
+
+    // Step 2: Assign base Case Values
+    for(int w=weight[0];w<=maxWeight;w++){
+        if(w<=maxWeight)
+            dp[0][w]=price[0];
+        else
+            dp[0][w]=0;
+    }
+
+    // Step 3: Calculate rest of the subproblem values from the previously solved subproblems
+    for(int i=1;i<no_of_product;i++){
+        for(int w=0;w<=maxWeight;w++){
+            int take=0;
+            if(weight[i]<=w){
+                take=price[i]+dp[i-1][w-weight[i]];
+            }
+            int skip=0+dp[i-1][w];
+            dp[i][w]=max(take,skip);
+        }
+    }
+    return dp[no_of_product-1][maxWeight];
+}
+
+
+int main()
+{
+    int no_of_product;
+    cout<<"Enter the number of products: ";
+    cin>>no_of_product;
+
+
+    vector<int> price(no_of_product);
+    vector<int> weight(no_of_product);
+    for(int i=0;i<no_of_product;i++){
+        cout<<"Enter product "<<i+1<<" price & Weight: ";
+        cin>>price[i]>>weight[i];
+    }
+
+    int maxWeight;
+    cout<<"Enter the maximum Weight: ";
+    cin>>maxWeight;
+
+
+    int ans=Knapsack0_1_Tabultion(price,weight,maxWeight,no_of_product);
+    cout<<"Maximum price is: "<<ans<<endl;
+
+    return 0;
+}
+
