@@ -1,0 +1,56 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int Knapsack0_1(vector<int> &price,vector<int> &weight,int maxWeight,int i,vector<vector<int>> &dp){
+    // base Case
+    if(i==0){
+        if(weight[0]<=maxWeight)
+            return price[0];
+        else
+            return 0;
+    }
+
+    // Step 3: Check if subproblem result is already stored,just return it
+    if(dp[i][maxWeight]!=-1){
+        return dp[i][maxWeight];
+    }
+
+    // Recursive Case
+    int take=0,skip;
+    if(weight[i]<=maxWeight){
+        take=price[i]+Knapsack0_1(price,weight,maxWeight-weight[i],i-1,dp);
+    }
+    skip=0+Knapsack0_1(price,weight,maxWeight,i-1,dp);
+
+    // Step 2: Store the recursion result in DP vector
+    dp[i][maxWeight]=max(take,skip);
+    return dp[i][maxWeight];
+}
+
+
+int main()
+{
+    int no_of_product;
+    cout<<"Enter the number of products: ";
+    cin>>no_of_product;
+
+
+    vector<int> price(no_of_product);
+    vector<int> weight(no_of_product);
+    for(int i=0;i<no_of_product;i++){
+        cout<<"Enter product "<<i+1<<" price & Weight: ";
+        cin>>price[i]>>weight[i];
+    }
+
+    int maxWeight;
+    cout<<"Enter the maximum Weight: ";
+    cin>>maxWeight;
+
+    // Step 1: Crete an 2D-DP vector and initialize with -1
+    vector<vector<int>> dp(no_of_product,vector<int> (maxWeight+1,-1));
+
+    int ans=Knapsack0_1(price,weight,maxWeight,no_of_product-1,dp);
+    cout<<"maximum price is: "<<ans<<endl;
+
+    return 0;
+}
