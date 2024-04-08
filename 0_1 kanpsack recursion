@@ -1,0 +1,49 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int Knapsack0_1(vector<int> &price,vector<int> &weight,int maxWeight,int i){
+    // base Case
+    if(i==0){
+        if(weight[0]<=maxWeight)
+            return price[0];
+        else
+            return 0;
+    }
+
+    // Recursive Case
+    int take=0,skip;
+    if(weight[i]<=maxWeight){
+        take=price[i]+Knapsack0_1(price,weight,maxWeight-weight[i],i-1);
+    }
+    skip=0+Knapsack0_1(price,weight,maxWeight,i-1);
+
+    int ans=max(take,skip);
+    return ans;
+    //return max(take,skip);
+}
+
+
+int main()
+{
+    int no_of_product;
+    cout<<"Enter the number of products: ";
+    cin>>no_of_product;
+
+
+    vector<int> price(no_of_product);
+    vector<int> weight(no_of_product);
+    for(int i=0;i<no_of_product;i++){
+        cout<<"Enter product "<<i+1<<" price & Weight: ";
+        cin>>price[i]>>weight[i];
+    }
+
+    int maxWeight;
+    cout<<"Enter the maximum Weight: ";
+    cin>>maxWeight;
+
+
+    int ans=Knapsack0_1(price,weight,maxWeight,no_of_product-1);
+    cout<<"maximum price is: "<<ans<<endl;
+
+    return 0;
+}
