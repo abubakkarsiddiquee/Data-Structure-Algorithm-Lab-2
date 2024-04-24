@@ -1,0 +1,43 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int maxSumNonAdjacent(vector<int>& nums, int n, vector<int>& dp) {
+    if (n <= 0) return 0;
+    if (dp[n] != -1) return dp[n];
+
+    int includeCurrent = nums[n - 1] + maxSumNonAdjacent(nums, n - 2, dp);
+    int excludeCurrent = maxSumNonAdjacent(nums, n - 1, dp);
+    
+    return dp[n] = max(includeCurrent, excludeCurrent);
+}
+
+int main() {
+    int t;
+    cin >> t;
+
+    vector<vector<int>> inputs(t);
+    vector<int> results(t);
+
+    for (int i = 0; i < t; ++i) {
+        int n;
+        cin >> n;
+        vector<int> nums(n);
+        for (int j = 0; j < n; ++j) {
+            cin >> nums[j];
+        }
+        inputs[i] = nums;
+    }
+
+    for (int i = 0; i < t; ++i) {
+        int n = inputs[i].size();
+        vector<int>& nums = inputs[i];
+        vector<int> dp(n + 1, -1); 
+        results[i] = maxSumNonAdjacent(nums, n, dp);
+    }
+
+    for (int i = 0; i < t; ++i) {
+        cout << results[i] << endl;
+    }
+
+    return 0;
+}
