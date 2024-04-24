@@ -1,0 +1,39 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int dp[1001];
+
+int solve(vector<int>& cost, int idx) {
+    if(idx < 0)
+        return 0;
+    
+    if(dp[idx] != -1) return dp[idx];
+    
+    if(idx == 0) return dp[idx] = cost[idx];
+    
+    int currCost = (idx == cost.size()) ? 0 : cost[idx];
+    
+    return dp[idx] = currCost + min(solve(cost, idx-1), solve(cost, idx-2));
+}
+
+int minCostClimbingStairs(vector<int>& cost) {
+    int n = cost.size();
+    memset(dp, -1, sizeof(dp));
+    return min(solve(cost, n-1), solve(cost, n-2));
+}
+
+int main() {
+    int n;
+    cout << "Enter the number of stairs: ";
+    cin >> n;
+    
+    vector<int> cost(n);
+    cout << "Enter the cost of reaching each stair: ";
+    for(int i = 0; i < n; ++i) {
+        cin >> cost[i];
+    }
+    
+    cout << "Minimum cost to climb stairs: " << minCostClimbingStairs(cost) << endl;
+    
+    return 0;
+}
