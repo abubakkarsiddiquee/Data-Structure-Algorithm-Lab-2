@@ -1,0 +1,49 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int max_segments(int N, int X, int Y, int Z) {
+    if (N <= 0)
+        return 0;
+
+    vector<int> dp(N + 1, INT_MIN);
+    dp[0] = 0;
+
+    for (int i = 1; i <= N; ++i) {
+        if (i - X >= 0)
+            dp[i] = max(dp[i], 1 + dp[i - X]);
+        if (i - Y >= 0)
+            dp[i] = max(dp[i], 1 + dp[i - Y]);
+        if (i - Z >= 0)
+            dp[i] = max(dp[i], 1 + dp[i - Z]);
+    }
+
+    return max(dp[N], 0);
+}
+
+vector<int> max_segments_wrapper(int T, vector<vector<int>>& test_cases) {
+    vector<int> results;
+    for (auto& case_ : test_cases) {
+        int N = case_[0], X = case_[1], Y = case_[2], Z = case_[3];
+        int segments = max_segments(N, X, Y, Z);
+        results.push_back(segments);
+    }
+    return results;
+}
+
+int main() {
+    int T;
+    cin >> T;
+    vector<vector<int>> test_cases(T, vector<int>(4));
+    for (int i = 0; i < T; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            cin >> test_cases[i][j];
+        }
+    }
+
+    vector<int> output = max_segments_wrapper(T, test_cases);
+    for (int result : output) {
+        cout << result << endl;
+    }
+
+    return 0;
+}
