@@ -1,0 +1,50 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int maxIngredients(int idx, int m, int k, vector<pair<int, int>>& bags, vector<vector<int>>& dp) {
+    if (idx < 0 || m <= 0) return 0;
+    if (dp[idx][m] != -1) return dp[idx][m];
+
+    int ingredients = bags[idx].first;
+    int price = bags[idx].second;
+
+    if (price > m) { // If the price of the bag exceeds the available budget, exclude it
+        return dp[idx][m] = maxIngredients(idx - 1, m, k, bags, dp);
+    }
+
+    int maxBags = m / price;
+    int maxIngredientsWithThisBag = min(maxBags * ingredients, m);
+
+    int includeCurrent = 0, excludeCurrent = 0;
+    if (maxIngredientsWithThisBag >= k) {
+        includeCurrent = maxIngredients(idx - 1, m - maxIngredientsWithThisBag, k - ingredients, bags, dp) + maxIngredientsWithThisBag;
+    }
+    excludeCurrent = maxIngredients(idx - 1, m, k, bags, dp);
+
+    return dp[idx][m] = max(includeCurrent, excludeCurrent);
+}
+
+int main() {
+    int n, m, k;
+    cin >> n >> m >> k;
+
+    vector<pair<int, int>> bags(n);
+    for (int i = 0; i < n; ++i) {
+        int ingredients, price;
+        cin >> ingredients >> price;
+        bags[i] = {ingredients, price};
+    }
+
+    vector<vector<int>> dp(n, vector<int>(m + 1, -1));
+
+    int result = maxIngredients(n - 1, m, k, bags, dp) + 1;
+
+    if (result >= k) {
+        cout << "YES " << result << endl;
+    } else {
+        cout << "NO" << endl;
+    }
+
+    return 0;
+}
