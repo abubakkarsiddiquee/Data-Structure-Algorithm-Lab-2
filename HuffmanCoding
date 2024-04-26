@@ -1,0 +1,76 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+// Encode a string using a given codeword mapping
+string encode(const string& text, const unordered_map<char, string>& codewords) {
+    string encoded;
+    for (char ch : text) {
+        if (codewords.find(ch) != codewords.end()) {
+            encoded += codewords.at(ch);
+        } else {
+            cerr << "Error: Character '" << ch << "' not found in codewords." << endl;
+            return "";
+        }
+    }
+    return encoded;
+}
+
+// Create a decoding map from a codeword mapping
+unordered_map<string, char> createDecodingMap(const unordered_map<char, string>& codewords) {
+    unordered_map<string, char> decodingMap;
+    for (const auto& pair : codewords) {
+        decodingMap[pair.second] = pair.first;
+    }
+    return decodingMap;
+}
+
+// Decode an encoded string using a decoding map
+string decode(const string& encodedText, const unordered_map<string, char>& decodingMap) {
+    string decoded;
+    string currentCode;
+    for (char bit : encodedText) {
+        currentCode += bit;
+        if (decodingMap.find(currentCode) != decodingMap.end()) {
+            decoded += decodingMap.at(currentCode);
+            currentCode = ""; // Reset current code for the next character
+        }
+    }
+    return decoded;
+}
+
+int main() {
+    // Define codewords for characters
+    unordered_map<char, string> codewords = {
+        {'a', "1100"},
+        {'b', "1101"},
+        {'c', "100"},
+        {'d', "101"},
+        {'e', "111"},
+        {'f', "0"}
+    };
+
+    cout << "Enter a string to encode characters must be(a, b, c, d, e, f): ";
+    string userInput;
+    getline(cin, userInput);
+
+    // Encode the user input using the codewords
+    string encodedText = encode(userInput, codewords);
+
+    if (encodedText.empty()) {
+        cerr << "Encoding failed." << endl;
+        return 1;
+    }
+
+    cout << "Encoded Text:\n" << encodedText << "\n";
+
+    // Create a decoding map
+    unordered_map<string, char> decodingMap = createDecodingMap(codewords);
+
+    // Decode the encoded text
+    string decodedText = decode(encodedText, decodingMap);
+
+    cout << "\nDecoded Text:\n" << decodedText << "\n";
+    cout << "Decoding correct: " << (decodedText == userInput) << "\n";
+
+    return 0;
+}
